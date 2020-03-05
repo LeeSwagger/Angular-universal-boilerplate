@@ -8,7 +8,7 @@ const sharedForms: any[] = [
 
 @NgModule({
   exports: [
-    ...sharedFonrms
+    ...sharedForms
   ],
   providers: [
     FormService
