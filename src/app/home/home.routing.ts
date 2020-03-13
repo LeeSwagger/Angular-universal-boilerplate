@@ -7,8 +7,8 @@ const routes: Routes = [
     component: HomeComponent,
     data: {
       meta: {
-        title: 'home.title',
-        description: 'home.text',
+        title: 'Главная страница',
+        description: 'Описание главной страницы',
         override: true,
       },
     },
