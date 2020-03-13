@@ -10,6 +10,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { InlineStyleModule } from './inline-style/inline-style.module';
 import { InlineStyleComponent } from './inline-style/inline-style.component';
 import { StateTransferInitializerModule } from '@nguniversal/common';
+import { UniversalInterceptor } from '@shared/interceptors/universal-interceptor';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 // import { ServiceWorkerModule } from '@angular/service-worker';
 
@@ -24,16 +26,22 @@ export function getRequest(): any {
     AppModule,
     StateTransferInitializerModule,
     BrowserTransferStateModule,
+    HttpClientModule,
     InlineStyleModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: false }),
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: false })
   ],
   providers: [
     {
       // The server provides these in main.server
       provide: REQUEST,
-      useFactory: getRequest,
+      useFactory: getRequest
     },
-    { provide: 'ORIGIN_URL', useValue: location.origin },
-  ],
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UniversalInterceptor,
+      multi: true
+    },
+    { provide: 'ORIGIN_URL', useValue: location.origin }
+  ]
 })
 export class AppBrowserModule {}
