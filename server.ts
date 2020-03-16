@@ -12,8 +12,13 @@ import { NgxRequest, NgxResponse } from '@gorniv/ngx-universal';
 import * as compression from 'compression';
 import * as cookieparser from 'cookie-parser';
 import { exit } from 'process';
+import { ORIGIN_URL } from '@shared/tokens/origin-url.token';
+
 // for debug
 require('source-map-support').install();
+
+// for proxy
+const proxy = require('express-http-proxy');
 
 // for tests
 const test = process.env['TEST'] === 'true';
@@ -58,6 +63,14 @@ export function app() {
   const redirectowww = false;
   const redirectohttps = false;
   const wwwredirecto = true;
+
+  // proxy to test json data
+  server.use('/api/**', proxy('https://jsonplaceholder.typicode.com', {
+    proxyReqPathResolver: function (req) {
+      return req.originalUrl.replace('api/', '');
+    }
+  }));
+
   server.use((req, res, next) => {
     // for domain/index.html
     if (req.url === '/index.html') {
@@ -111,7 +124,10 @@ export function app() {
   server.set('views', distFolder);
 
   // Example Express Rest API endpoints
-  // app.get('/api/**', (req, res) => { });
+  server.get('/api/*', (req, res) => {
+    res.status(200).json({});
+  });
+
   // Serve static files from /browser
   server.get(
     '*.*',
@@ -151,7 +167,7 @@ export function app() {
         },
         // for absolute path
         {
-          provide: 'ORIGIN_URL',
+          provide: ORIGIN_URL,
           useValue: `${http}://${req.headers.host}`,
         },
       ],

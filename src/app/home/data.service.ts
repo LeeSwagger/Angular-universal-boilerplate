@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class DataService {
   constructor(private http: HttpClient) {}
 
-  async getData(): Promise<any> {
-    return await this.http.get('jsonplaceholder.typicode.com/todos?_limit=3').toPromise();
+  getData(): Promise<any> {
+    // BE requests have to start with 'api/' https://angular.io/guide/universal#filtering-request-urls
+    return this.http.get(`/api/todos?_limit=3`).toPromise();
   }
 }
