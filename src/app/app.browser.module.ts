@@ -1,8 +1,7 @@
 // angular
 import { NgModule } from '@angular/core';
 import { BrowserTransferStateModule } from '@angular/platform-browser';
-// libs
-import { REQUEST } from '@nguniversal/express-engine/tokens';
+
 // components
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';
@@ -10,15 +9,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { InlineStyleModule } from './inline-style/inline-style.module';
 import { InlineStyleComponent } from './inline-style/inline-style.component';
 import { StateTransferInitializerModule } from '@nguniversal/common';
-import { UniversalInterceptor } from '@shared/interceptors/universal-interceptor';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-
-// import { ServiceWorkerModule } from '@angular/service-worker';
-
-// the Request object only lives on the server
-export function getRequest(): any {
-  return { headers: { cookie: document.cookie } };
-}
+import { HttpClientModule } from '@angular/common/http';
+import { ORIGIN_URL } from '@shared/tokens/origin-url.token';
 
 @NgModule({
   bootstrap: [AppComponent, InlineStyleComponent],
@@ -30,18 +22,6 @@ export function getRequest(): any {
     InlineStyleModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: false })
   ],
-  providers: [
-    {
-      // The server provides these in main.server
-      provide: REQUEST,
-      useFactory: getRequest
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: UniversalInterceptor,
-      multi: true
-    },
-    { provide: 'ORIGIN_URL', useValue: location.origin }
-  ]
+  providers: [{ provide: ORIGIN_URL, useValue: location.origin }]
 })
 export class AppBrowserModule {}
