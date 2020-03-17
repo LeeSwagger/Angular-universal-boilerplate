@@ -21,9 +21,18 @@
               "src/assets",
               "src/favicon.ico",
               "src/robots.txt",
-              "src/manifest.json"
+              "src/manifest.json",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@yota/ui-kit/assets",
+                "output": "./assets"
+              }
             ],
-            "styles": [],
+            "styles": [
+              "./node_modules/@yota/ui-kit/assets/themes/yota-theme.css",
+              "./node_modules/@yota/ui-kit/assets/themes/yota-inverse-theme.css",
+              "src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
