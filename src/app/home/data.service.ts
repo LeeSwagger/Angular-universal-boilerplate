@@ -6,6 +6,6 @@ export class DataService {
   constructor(private http: HttpClient) {}
 
   getData(): Promise<any> {
-    return this.http.get('/api/todos?_limit=3').toPromise();
+    return this.http.get(`/api/todos?_limit=3`).toPromise();
   }
 }
