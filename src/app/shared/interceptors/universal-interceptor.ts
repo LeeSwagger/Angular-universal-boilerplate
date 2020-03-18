@@ -1,25 +1,20 @@
 import { Injectable, Inject, Optional } from '@angular/core';
 import { HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
-import { Request } from 'express';
-import { REQUEST } from '@nguniversal/express-engine/tokens';
+import { ORIGIN_URL } from '@shared/tokens/origin-url.token';
 
 @Injectable()
 export class UniversalInterceptor implements HttpInterceptor {
-  constructor(@Optional() @Inject(REQUEST) protected request?: Request) {}
+  constructor(@Optional() @Inject(ORIGIN_URL) protected originUrl?: string) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
-    let serverReq: HttpRequest<any> = req;
-    console.log('this.request', this.request);
+    console.log(`source url: ${req.url}`);
 
-    if (this.request && this.request.get) {
-      console.log('this.request.protocol', this.request.protocol);
-      let newUrl = `${this.request.protocol}://${this.request.get('host')}`;
-      if (!req.url.startsWith('/')) {
-        newUrl += '/';
-      }
-      newUrl += req.url;
-      serverReq = req.clone({ url: newUrl });
-    }
+    const originUrl = this.originUrl || '';
+    const serverReq = req.clone({
+      url: `${originUrl}${req.url}`
+    });
+
+    console.log(`result url: ${serverReq.url}`);
     return next.handle(serverReq);
   }
 }

@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { HomeRoutes } from './home.routing';
 import { HomeComponent } from './home.component';
-import { YInputModule } from '@yota/ui-kit/input';
+import { DataService } from './data.service';
 
 @NgModule({
-  imports: [CommonModule, HomeRoutes, YInputModule],
-  declarations: [HomeComponent]
+  imports: [CommonModule, HomeRoutes],
+  declarations: [HomeComponent],
+  providers: [DataService]
 })
 export class HomeModule {}
