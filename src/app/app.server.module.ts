@@ -11,7 +11,7 @@ import { CookieService, CookieBackendService } from '@gorniv/ngx-universal';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UniversalInterceptor } from '@shared/interceptors/universal-interceptor';
 import { PlatformLocation } from '@angular/common';
-import { ExpressRedirectPlatformLocation } from '@shared/services/redicrect.service';
+// import { ExpressRedirectPlatformLocation } from '@shared/services/redicrect.service';
 
 @NgModule({
   imports: [
@@ -24,7 +24,7 @@ import { ExpressRedirectPlatformLocation } from '@shared/services/redicrect.serv
   ],
   bootstrap: [AppComponent, InlineStyleComponent],
   providers: [
-    { provide: PlatformLocation, useClass: ExpressRedirectPlatformLocation },
+    // { provide: PlatformLocation, useClass: ExpressRedirectPlatformLocation },
     {
       provide: CookieService,
       useClass: CookieBackendService
