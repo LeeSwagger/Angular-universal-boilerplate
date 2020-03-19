@@ -10,6 +10,8 @@ import { InlineStyleModule } from './inline-style/inline-style.module';
 import { CookieService, CookieBackendService } from '@gorniv/ngx-universal';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UniversalInterceptor } from '@shared/interceptors/universal-interceptor';
+import { PlatformLocation } from '@angular/common';
+import { ExpressRedirectPlatformLocation } from '@shared/services/redicrect.service';
 
 @NgModule({
   imports: [
@@ -22,6 +24,7 @@ import { UniversalInterceptor } from '@shared/interceptors/universal-interceptor
   ],
   bootstrap: [AppComponent, InlineStyleComponent],
   providers: [
+    { provide: PlatformLocation, useClass: ExpressRedirectPlatformLocation },
     {
       provide: CookieService,
       useClass: CookieBackendService
